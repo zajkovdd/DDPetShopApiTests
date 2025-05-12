@@ -33,3 +33,14 @@ class TestPet:
         with allure.step('Check text from response'):
             assert response.text == 'Pet not found', 'Text is not correct with expected response'
 
+    @allure.title('Try to get info about non-existent pet')
+    def test_get_info_about_nonexistent_pet(self):
+        with allure.step('Send request to get info about non-existent pet'):
+            response = requests.get(url=f'{BASE_URL}pet/9999')
+
+        with allure.step('Check response code'):
+            assert response.status_code == 404, 'Code is not correct with expected response'
+
+        with allure.step('Check text from response'):
+            assert response.text == 'Pet not found', 'Text is not correct with expected response'
+
