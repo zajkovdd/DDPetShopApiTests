@@ -102,3 +102,18 @@ class TestPet:
             assert response_json["photoUrls"] == payload["photoUrls"], 'Pet photoUrls is not correct with expected response'
             assert response_json["tags"] == payload["tags"], 'Pet tags is correct with expected response'
             assert response_json["status"] == payload["status"], 'Pet status is not correct with expected response'
+
+    @allure.title('Get info about pet with ID')
+    def test_get_info_about_pet_with_id(self, create_pet):
+        with allure.step('Get pet ID from response'):
+            petId = create_pet['id']
+
+        with allure.step('Send request to get pet info by ID'):
+            response = requests.get(url=f'{BASE_URL}pet/{petId}')
+
+        with allure.step('Check response code'):
+            assert response.status_code == 200, 'Code is not correct with expected response'
+
+        with allure.step('Check ID from response'):
+            assert response.json()["id"] == petId, 'Pet ID is not correct with expected response'
+
