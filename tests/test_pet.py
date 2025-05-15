@@ -167,7 +167,7 @@ class TestPet:
         ]
     )
     def test_get_list_of_pets_by_status(self, create_pet, status, expected_status_code):
-        with allure.step('Send request to get list of pets by status'):
+        with allure.step(f'Send request to get list of pets by {status}'):
             response = requests.get(url=f'{BASE_URL}pet/findByStatus',params={'status': status})
 
         with allure.step('Check status code and data format'):
