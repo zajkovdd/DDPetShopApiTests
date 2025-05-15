@@ -161,6 +161,9 @@ class TestPet:
         [
             ('available', 200),
             ('pending', 200),
+            ('sold', 200),
+            ('reserved', 400),
+            ('', 400)
         ]
     )
     def test_get_list_of_pets_by_status(self, create_pet, status, expected_status_code):
@@ -169,4 +172,6 @@ class TestPet:
 
         with allure.step('Check status code and data format'):
             assert response.status_code == expected_status_code, 'Code is not correct with expected response'
-            assert isinstance(response.json(), list), 'Response is not a list'
+            if expected_status_code == 200:
+                assert isinstance(response.json(), list), 'Response is not a list'
+            else: print('Response is not a list')
