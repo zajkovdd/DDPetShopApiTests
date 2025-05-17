@@ -176,6 +176,4 @@ class TestPet:
                 assert isinstance(response.json(), list), 'Response is not a list'
             elif expected_status_code == 400:
                 assert isinstance(response.json(), dict), 'Response is not a dictionary'
-            else:
-                print('Response is not 200 and 400')
 
