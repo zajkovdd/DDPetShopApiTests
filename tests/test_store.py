@@ -2,6 +2,7 @@ import allure
 import jsonschema
 import requests
 
+from .schemas.inventory_schema import INVENTORY_SCHEMA
 from .schemas.order_schema import ORDER_SCHEMA
 
 BASE_URL = 'http://5.181.109.28:9090/api/v3/'
@@ -71,3 +72,13 @@ class TestStore:
 
         with allure.step('Check response code'):
             assert response.status_code == 404, 'Code is not correct with expected response'
+
+    @allure.title('Get inventory from store')
+    def test_get_inventory_from_store(self):
+        with allure.step('Send request to get inventory from store'):
+            response = requests.get(url=f'{BASE_URL}store/inventory')
+            response_json = response.json()
+
+        with allure.step('Check response code and validate JSON_SCHEMA'):
+            assert response.status_code == 200, 'Code is not correct with expected response'
+            jsonschema.validate(response_json, INVENTORY_SCHEMA)
