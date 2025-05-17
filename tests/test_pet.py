@@ -1,5 +1,6 @@
 import allure
 import jsonschema
+import pytest
 import requests
 from .schemas.pet_schema import PET_SCHEMA
 
@@ -153,3 +154,26 @@ class TestPet:
 
         with allure.step('Check response code'):
             assert response.status_code == 404, 'Code is not correct with expected response'
+
+    @allure.title('Get list of pets by status')
+    @pytest.mark.parametrize(
+        'status, expected_status_code',
+        [
+            ('available', 200),
+            ('pending', 200),
+            ('sold', 200),
+            ('reserved', 400),
+            ('', 400)
+        ]
+    )
+    def test_get_list_of_pets_by_status(self, create_pet, status, expected_status_code):
+        with allure.step(f'Send request to get list of pets by {status}'):
+            response = requests.get(url=f'{BASE_URL}pet/findByStatus',params={'status': status})
+
+        with allure.step('Check status code and data format'):
+            assert response.status_code == expected_status_code, 'Code is not correct with expected response'
+            if expected_status_code == 200:
+                assert isinstance(response.json(), list), 'Response is not a list'
+            elif expected_status_code == 400:
+                assert isinstance(response.json(), dict), 'Response is not a dictionary'
+
