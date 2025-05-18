@@ -82,3 +82,4 @@ class TestStore:
         with allure.step('Check response code and validate JSON_SCHEMA'):
             assert response.status_code == 200, 'Code is not correct with expected response'
             jsonschema.validate(response_json, INVENTORY_SCHEMA)
+            assert isinstance(response_json, dict), 'Response is not a dictionary'
